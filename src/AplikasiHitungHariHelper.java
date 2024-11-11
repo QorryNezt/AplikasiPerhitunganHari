@@ -9,7 +9,8 @@ import java.time.temporal.ChronoUnit;
  * @author Sayyida Qurrata A'yunin - 2210010331
  */
 public class AplikasiHitungHariHelper {
-     public static long calculateDaysBetween(LocalDate hariAwal, LocalDate hariAkhir) {
+      // Method to calculate the difference in days between two dates
+    public static long calculateDaysBetween(LocalDate hariAwal, LocalDate hariAkhir) {
         return ChronoUnit.DAYS.between(hariAwal, hariAkhir);
-     }
+    }
 }

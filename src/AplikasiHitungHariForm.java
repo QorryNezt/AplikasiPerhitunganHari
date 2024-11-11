@@ -5,7 +5,9 @@ import java.awt.Color;
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
  */
-
+import java.time.LocalDate;
+import java.time.ZoneId;
+import javax.swing.JOptionPane;
 /**
  *
  * @author Sayyida Qurrata A'yunin - 2210010331
@@ -154,7 +156,30 @@ public class AplikasiHitungHariForm extends javax.swing.JFrame {
     }//GEN-LAST:event_btnHapusActionPerformed
 
     private void btnHitungActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnHitungActionPerformed
-        // TODO add your handling code here:
+          try {
+        // Get the dates from JDateChooser components
+        java.util.Date startUtilDate = JDAwal.getDate();
+        java.util.Date endUtilDate = JDAkhir.getDate();
+
+        // Check if dates are not null
+        if (startUtilDate == null || endUtilDate == null) {
+            JOptionPane.showMessageDialog(this, "Please select both dates.", "Error", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+
+        // Convert java.util.Date to java.time.LocalDate
+        LocalDate hariAwal = startUtilDate.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+        LocalDate hariAkhir = endUtilDate.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+
+        // Calculate the days between using the helper
+        long daysBetween = AplikasiHitungHariHelper.calculateDaysBetween(hariAwal, hariAkhir);
+
+        // Display the result
+        txtHasil.setText(Long.toString(daysBetween));
+    } catch (Exception e) {
+        // Show an error message if something goes wrong
+        JOptionPane.showMessageDialog(this, "An error occurred. Please try again.", "Error", JOptionPane.ERROR_MESSAGE);
+    }
     }//GEN-LAST:event_btnHitungActionPerformed
 
     private void txtHasilFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txtHasilFocusGained
