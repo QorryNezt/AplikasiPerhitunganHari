@@ -17,8 +17,10 @@ public class AplikasiHitungHariForm extends javax.swing.JFrame {
      */
     public AplikasiHitungHariForm() {
         initComponents();
-        Color col = new Color(239,198,130);
-        getContentPane().setBackground(col);
+        Color col = new Color(239,198,130); //Mengganti warna BG Cokelat :D
+        getContentPane().setBackground(col); //Memanggil konten utk menampilkan BG Cokelat
+        txtHasil.setFocusable(true); 
+        // Membuat textfield Selectable tapi tetap tidak bisa diedit (>u<)
     }
 
     /**
@@ -61,7 +63,13 @@ public class AplikasiHitungHariForm extends javax.swing.JFrame {
 
         JDAwal.setFont(new java.awt.Font("Bahnschrift", 0, 14)); // NOI18N
 
+        txtHasil.setEditable(false);
         txtHasil.setFont(new java.awt.Font("Bahnschrift", 0, 14)); // NOI18N
+        txtHasil.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusGained(java.awt.event.FocusEvent evt) {
+                txtHasilFocusGained(evt);
+            }
+        });
 
         btnHitung.setFont(new java.awt.Font("Bahnschrift", 0, 14)); // NOI18N
         btnHitung.setText("Hitung");
@@ -140,12 +148,20 @@ public class AplikasiHitungHariForm extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnHapusActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnHapusActionPerformed
-        // TODO add your handling code here:
+        JDAwal.setDate(null);    // Hapus tanggal hari awal
+        JDAkhir.setDate(null);    // Hapus tanggal hari akhir
+        txtHasil.setText(""); // Menghapus isi konten hasil textfield
     }//GEN-LAST:event_btnHapusActionPerformed
 
     private void btnHitungActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnHitungActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_btnHitungActionPerformed
+
+    private void txtHasilFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txtHasilFocusGained
+        txtHasil.selectAll(); 
+        //Apabila di klik textfield nya maka seluruh tulisan akan terblok dan bisa di copas
+        //Text field dibuat memang untuk tidak bisa diedit agar terhindar dari kesalahgunaan
+    }//GEN-LAST:event_txtHasilFocusGained
 
     /**
      * @param args the command line arguments
