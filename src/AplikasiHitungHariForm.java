@@ -24,7 +24,13 @@ public class AplikasiHitungHariForm extends javax.swing.JFrame {
         txtHasil.setFocusable(true); 
         // Membuat textfield Selectable tapi tetap tidak bisa diedit (>u<)
     }
-
+    private void Hapus() { // Membuat method untuk membersihkan field.
+        // Method Membersihkan Semua Fields
+        JDAwal.setDate(null);    // Hapus tanggal hari awal
+        JDAkhir.setDate(null);    // Hapus tanggal hari akhir
+        txtHasil.setText(""); // Menghapus isi konten hasil textfield
+    }
+        
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -64,6 +70,11 @@ public class AplikasiHitungHariForm extends javax.swing.JFrame {
         JDAkhir.setFont(new java.awt.Font("Bahnschrift", 0, 14)); // NOI18N
 
         JDAwal.setFont(new java.awt.Font("Bahnschrift", 0, 14)); // NOI18N
+        JDAwal.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusGained(java.awt.event.FocusEvent evt) {
+                JDAwalFocusGained(evt);
+            }
+        });
 
         txtHasil.setEditable(false);
         txtHasil.setFont(new java.awt.Font("Bahnschrift", 0, 14)); // NOI18N
@@ -91,6 +102,11 @@ public class AplikasiHitungHariForm extends javax.swing.JFrame {
 
         btnQuit.setFont(new java.awt.Font("Bahnschrift", 0, 14)); // NOI18N
         btnQuit.setText("Keluar");
+        btnQuit.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnQuitActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -150,35 +166,34 @@ public class AplikasiHitungHariForm extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnHapusActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnHapusActionPerformed
-        JDAwal.setDate(null);    // Hapus tanggal hari awal
-        JDAkhir.setDate(null);    // Hapus tanggal hari akhir
-        txtHasil.setText(""); // Menghapus isi konten hasil textfield
+        Hapus(); // Membersihkan semua tombol ini berfungsi dengan baik :)
     }//GEN-LAST:event_btnHapusActionPerformed
 
     private void btnHitungActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnHitungActionPerformed
-          try {
-        // Get the dates from JDateChooser components
+        // Memulai kalkulasi perhitungan apabila menekan tombol hitung  
+        try {
+        // mengambil tanggal dari JDateChooser
         java.util.Date startUtilDate = JDAwal.getDate();
         java.util.Date endUtilDate = JDAkhir.getDate();
 
-        // Check if dates are not null
+        // Mencek apakah tanggal di isi kosong atau tidak
         if (startUtilDate == null || endUtilDate == null) {
-            JOptionPane.showMessageDialog(this, "Please select both dates.", "Error", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(this, "Mohon isi kedua tanggalnya!", "Error", JOptionPane.ERROR_MESSAGE);
             return;
         }
 
-        // Convert java.util.Date to java.time.LocalDate
+        // Konversi java.util.Date ke java.time.LocalDate untuk mendapatkan total hari
         LocalDate hariAwal = startUtilDate.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
         LocalDate hariAkhir = endUtilDate.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
 
-        // Calculate the days between using the helper
+        // Menghitung jumlah hari diantara tanggal yang ditentukan menggunakan helper
         long daysBetween = AplikasiHitungHariHelper.calculateDaysBetween(hariAwal, hariAkhir);
 
-        // Display the result
-        txtHasil.setText(Long.toString(daysBetween));
+        // Menampilkan Hasil perhitungan hari
+        txtHasil.setText(Long.toString(daysBetween) + " Hari");
     } catch (Exception e) {
-        // Show an error message if something goes wrong
-        JOptionPane.showMessageDialog(this, "An error occurred. Please try again.", "Error", JOptionPane.ERROR_MESSAGE);
+        // Menampilkan Error jika terjadi kesalahan yang tidak terduga
+        JOptionPane.showMessageDialog(this, "Terjadi kesalahan, mohon dicoba lagi.", "Error", JOptionPane.ERROR_MESSAGE);
     }
     }//GEN-LAST:event_btnHitungActionPerformed
 
@@ -187,6 +202,19 @@ public class AplikasiHitungHariForm extends javax.swing.JFrame {
         //Apabila di klik textfield nya maka seluruh tulisan akan terblok dan bisa di copas
         //Text field dibuat memang untuk tidak bisa diedit agar terhindar dari kesalahgunaan
     }//GEN-LAST:event_txtHasilFocusGained
+
+    private void btnQuitActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnQuitActionPerformed
+        // Fungsi button Keluar atau Quit. Sebelum menutup program akan ada konfirmasi terdahulu.
+        int response = JOptionPane.showConfirmDialog(this, "Apakah anda yakin ingin keluar?", "Konfirmasi Keluar",
+            JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
+        if (response == JOptionPane.YES_OPTION) {
+            System.exit(0);
+    }
+    }//GEN-LAST:event_btnQuitActionPerformed
+
+    private void JDAwalFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_JDAwalFocusGained
+        Hapus(); // Hapus semua jika focus gain kepada JDateChooser masih tidak berfungsi dengan benar );
+    }//GEN-LAST:event_JDAwalFocusGained
 
     /**
      * @param args the command line arguments
